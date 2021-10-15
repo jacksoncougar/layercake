@@ -1,0 +1,23 @@
+﻿toggle navigation with caps_lock
+
+up_arrow is nothing
+left_arrow is nothing
+down_arrow is nothing
+right_arrow is nothing
+
+when bundle is www.parsec.tv
+    swap left_command and left_alt 
+done
+
+navigation layer 
+    i is up_arrow
+    j is left_arrow
+    k is down_arrow
+    l is right_arrow
+    h is home
+    n is end
+    s is left_shift
+    a is left_control
+    open_bracket is delete_forward
+    quote is delete_or_backspace
+done

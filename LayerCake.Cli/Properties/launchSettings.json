@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LayerCake.Cli": {
+      "commandName": "Project",
+      "commandLineArgs": "demo.txt"
+    }
+  }
+}
