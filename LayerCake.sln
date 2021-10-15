@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{44FBEF22-37C5-466A-9CDC-14245E6B3683}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerCake.Karabiner", "LayerCake.Karabiner\LayerCake.Karabiner.csproj", "{F1E151A7-7963-455A-8F83-75E66F9F4E9F}"
