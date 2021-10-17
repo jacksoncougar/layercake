@@ -11,7 +11,9 @@ namespace LayerCake.Tests
 
         public LayerCakeWhereVisitorTests()
         {
-            uat = new LayerCakeWhereVisitor();
+            SymbolTable symbolTable = new SymbolTable();
+            var currentLayer = symbolTable.AddSymbol(new Layer("Keyboard"));
+            uat = new LayerCakeWhereVisitor(symbolTable, currentLayer);
         }
 
         [Fact()]
@@ -25,7 +27,7 @@ namespace LayerCake.Tests
 
             var layer = uat.Visit(tree);
 
-            layer.Name.Should().Be("www.parsec.tv");
+            layer.Whens[^1].applicationName.Should().Be("www.parsec.tv");
         }
 
         [Fact()]
@@ -40,7 +42,9 @@ namespace LayerCake.Tests
 
             var layer = uat.Visit(tree);
 
-            layer.Maps.Should().Contain(new Mapping("a", "b"));
+            layer.Maps[^1].Should().BeEquivalentTo(new Map("a", "b"),
+                options => options.Excluding(m => m.Id)
+                                  .ComparingByMembers<Map>());
         }
 
         [Fact()]
@@ -57,9 +61,11 @@ namespace LayerCake.Tests
             var layer = uat.Visit(tree);
 
             layer.Maps.Should()
-                .ContainInOrder(
-                new Mapping("a", "b"),
-                new Mapping("b", "a"));
+                .BeEquivalentTo(new[] {
+                new Map("a", "b"),
+                new Map("b", "a") },
+                options => options.Excluding(m => m.Id)
+                                  .ComparingByMembers<Map>());
         }
 
         [Fact()]
@@ -74,7 +80,26 @@ namespace LayerCake.Tests
 
             var layer = uat.Visit(tree);
 
-            layer.Toggles.Should().Contain(new Toggle("caps_lock", "layer2"));
+            layer.Toggles.Should().ContainEquivalentOf(new Toggle("caps_lock", "layer2"),
+                options => options.Excluding(m => m.Id)
+                                  .ComparingByMembers<Toggle>());
+        }
+
+
+
+        [Fact()]
+        public void VisitToggle_statement_ReturnsCondition()
+        {
+            const string Input = @"
+                when bundle is www.parsec.tv
+                  toggle layer2 with caps_lock
+                done
+            ";
+            LayerCakeParser.ConfigContext tree = ConfigFactory.CreateConfigContext(Input);
+
+            var layer = uat.Visit(tree);
+            layer.Toggles[^1].to.Should().Be("layer2");
+            layer.LinksOf(layer.Toggles[^1].Id, SymbolType.Condition).Should().ContainEquivalentOf(layer.Whens[^1].Id);
         }
     }
 }

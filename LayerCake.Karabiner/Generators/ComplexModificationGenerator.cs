@@ -8,30 +8,32 @@ namespace LayerCake.Karabiner
     public record ComplexModification(string Desciption, Rule[] Rules);
     public class ComplexModificationGenerator
     {
-        public static ComplexModification Generate(ILayerTable data)
+        public static ComplexModification Generate(SymbolTable data)
         {
+
             ToggleRuleGenerator toggleRuleGenerator = new ToggleRuleGenerator();
 
-            IEnumerable<Rule> toggleRules = data.Layers.SelectMany(x =>
+            IEnumerable<Rule> toggleRules = Synthesis.SynthesizeToggles(data).Select(x =>
             {
-                return x.Toggles.Select(toggle => ToggleRuleGenerator.Generate(
-                    x.Name,
-                    toggle.ToLayer,
-                    toggle.Key,
-                    data.ConditionsOf(x).ToArray()));
+                return ToggleRuleGenerator.Generate(
+                    x.fromLayer,
+                    x.toLayer,
+                    x.key,
+                    x.conditions,
+                    x.when);
             });
 
             MappingRuleGenerator mappingRuleGenerator = new MappingRuleGenerator();
 
-            IEnumerable<Rule> mappingRules = data.Layers.SelectMany(x =>
+            IEnumerable<Rule> mappingRules = Synthesis.SynthesizeMaps(data).Select(x =>
             {
-                return x.Maps.Select(map => MappingRuleGenerator.Generate(
-                    x.Name,
-                    map.From,
-                    map.To,
-                    data.ConditionsOf(x).ToArray()));
+                return MappingRuleGenerator.Generate(
+                    x.name,
+                    x.from,
+                    x.to,
+                    x.conditions,
+                    x.when);
             });
-
             return new ComplexModification("", toggleRules.Concat(mappingRules).ToArray());
         }
     }

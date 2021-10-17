@@ -1,12 +1,16 @@
-﻿using System.Linq;
+﻿
+using System;
+using System.Linq;
 using System.Text.Json;
 
 namespace LayerCake.Karabiner
 {
     public class MappingRuleGenerator
     {
-        public static Rule Generate(string layer, string from, string to, params string[] conditions)
+        public static Rule Generate(string layer, string from, string to, string[] conditions = null, string when = null)
         {
+            conditions ??= Array.Empty<string>();
+
             return new Rule
             {
                 Description = $"{layer}: {from} is {to}",
@@ -21,8 +25,7 @@ namespace LayerCake.Karabiner
                             }
                         },
                         To = GenerateToProperty(to),
-                        Conditions = conditions.Select(x => new Condition { Name = x, Value = 1 })
-                            .ToArray()
+                        Conditions = ConditionGenerator.Generate(conditions, when)
                     }
                 }
             };

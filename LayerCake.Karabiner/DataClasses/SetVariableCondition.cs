@@ -1,6 +1,6 @@
 ﻿namespace LayerCake.Karabiner
 {
-    public record Condition
+    public record SetVariableCondition
     {
         public string Type => "variable_if";
         public string Name { get; set;  }

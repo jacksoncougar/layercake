@@ -3,6 +3,7 @@ using LayerCake.DataClasses;
 using LayerCake.Karabiner;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 
 namespace LayerCake.Cli
@@ -19,8 +20,9 @@ namespace LayerCake.Cli
             LayerCakeParser layerCakeParser = new LayerCakeParser(commonTokenStream);
             LayerCakeParser.ConfigContext context = layerCakeParser.config();
 
-            LayerTable layerTable = new LayerTable();
+            SymbolTable layerTable = new SymbolTable();
             new LayerCakeVisitor(layerTable).Visit(context);
+
             ComplexModification complexModification = ComplexModificationGenerator.Generate(layerTable);
 
             Console.Write(JsonSerializer.Serialize(complexModification, typeof(ComplexModification), new JsonSerializerOptions
