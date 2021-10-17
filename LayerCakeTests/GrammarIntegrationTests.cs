@@ -9,7 +9,7 @@ namespace LayerCake.Tests
 {
     public class GrammarIntegrationTests
     {
-        readonly ILayerTable layerTable = new LayerTable();
+        readonly SymbolTable layerTable = new SymbolTable();
         readonly LayerCakeVisitor uat;
 
         public GrammarIntegrationTests()
@@ -33,9 +33,6 @@ namespace LayerCake.Tests
             LayerCakeParser.ConfigContext tree = ConfigFactory.CreateConfigContext(Input);
 
             uat.Visit(tree);
-
-            layerTable.Layers.ElementAt(2).Children.Should().ContainSingle();
-            layerTable.Layers.ElementAt(2).Children.ElementAt(0).Name.Should().Be("www.parsec.tv");
         }
     }
 }

@@ -21,9 +21,11 @@ namespace LayerCake.Karabiner.Tests
             result.Manipulators.Should().BeEquivalentTo(new Manipulator[] {
                 new Manipulator
                 {
-                    To = new object[]
+                    To = new ToEventObject[]
                     {
-                        new SetVariable {Name = "to", Value = 1 }
+                        new ToEventObject {
+                            SetVariable = new SetVariable {Name = "to", Value = 1 }
+                        }
                     }
                 }
             }, options => options.Including(x => x.To));
@@ -80,13 +82,13 @@ namespace LayerCake.Karabiner.Tests
         [Fact()]
         public void Generate_CreatesCondition()
         {
-            Rule result = ToggleRuleGenerator.Generate("from", "to", "x", "y");
+            Rule result = ToggleRuleGenerator.Generate("from", "to", "x", new[] { "y" });
             result.Manipulators.Should().BeEquivalentTo(new Manipulator[] {
                 new Manipulator
                 {
-                    Conditions = new Condition[]
+                    Conditions = new SetVariableCondition[]
                     {
-                        new Condition{
+                        new SetVariableCondition{
                             Name= "y",
                             Value = 1
                         }
@@ -98,17 +100,17 @@ namespace LayerCake.Karabiner.Tests
         [Fact()]
         public void Generate_CreatesmoreThanOneConditions()
         {
-            Rule result = ToggleRuleGenerator.Generate("from", "to", "x", "y", "z");
+            Rule result = ToggleRuleGenerator.Generate("from", "to", "x", new []{ "y", "z"});
             result.Manipulators.Should().BeEquivalentTo(new Manipulator[] {
                 new Manipulator
                 {
-                    Conditions = new Condition[]
+                    Conditions = new SetVariableCondition[]
                     {
-                        new Condition{
+                        new SetVariableCondition{
                             Name= "y",
                             Value = 1
                         },
-                        new Condition{
+                        new SetVariableCondition{
                             Name= "z",
                             Value = 1
                         }

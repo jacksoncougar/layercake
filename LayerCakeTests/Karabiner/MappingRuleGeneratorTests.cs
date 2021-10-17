@@ -65,13 +65,13 @@ namespace LayerCake.Karabiner.Tests
         [Fact()]
         public void MappingRuleGenerator_CreatesVariableIfCondition()
         {
-            Rule result = MappingRuleGenerator.Generate("keyboard", "a", "b", "x");
+            Rule result = MappingRuleGenerator.Generate("keyboard", "a", "b", new[] { "x" });
             result.Manipulators.Should().BeEquivalentTo(new Manipulator[] {
                 new Manipulator
                 {
-                    Conditions = new Condition[]
+                    Conditions = new SetVariableCondition[]
                     {
-                        new Condition
+                        new SetVariableCondition
                         {
                             Name = "x",
                             Value = 1
@@ -84,18 +84,18 @@ namespace LayerCake.Karabiner.Tests
         [Fact()]
         public void MappingRuleGenerator_CreatesMoreThanOneVariableIfConditions()
         {
-            Rule result = MappingRuleGenerator.Generate("keyboard", "a", "b", "x", "y");
+            Rule result = MappingRuleGenerator.Generate("keyboard", "a", "b", new[] { "x", "y" });
             result.Manipulators.Should().BeEquivalentTo(new Manipulator[] {
                 new Manipulator
                 {
-                    Conditions = new Condition[]
+                    Conditions = new SetVariableCondition[]
                     {
-                        new Condition
+                        new SetVariableCondition
                         {
                             Name = "x",
                             Value = 1
                         },
-                        new Condition
+                        new SetVariableCondition
                         {
                             Name = "y",
                             Value = 1

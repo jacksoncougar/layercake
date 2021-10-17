@@ -9,7 +9,7 @@ namespace LayerCake.Karabiner.Tests
         [Fact()]
         public void Generate_GivenDefaultLayerTable_GeneratesEmptyComplexModification()
         {
-            ComplexModification result = ComplexModificationGenerator.Generate(new LayerTable());
+            ComplexModification result = ComplexModificationGenerator.Generate(new SymbolTable());
 
             result.Should().NotBeNull();
             result.Rules.Should().BeEmpty();
@@ -18,8 +18,10 @@ namespace LayerCake.Karabiner.Tests
         [Fact()]
         public void Generate_GivenTopLevelToggle_GeneratesToggleRule()
         {
-            LayerTable layerTable = new LayerTable();
-            layerTable.Keyboard.AddToggle("caps_lock", "layer_one");
+            SymbolTable layerTable = new SymbolTable();
+            var layerId = layerTable.AddSymbol(new Layer("Keyboard"));
+            var mapId = layerTable.AddSymbol(new Toggle("a", "layer2"));
+            layerTable.AddLink(layerId, mapId);
 
             ComplexModification result = ComplexModificationGenerator.Generate(layerTable);
 
@@ -30,8 +32,10 @@ namespace LayerCake.Karabiner.Tests
         [Fact()]
         public void Generate_GivenTopLevelMapping_GeneratesMappingRule()
         {
-            LayerTable layerTable = new LayerTable();
-            layerTable.Keyboard.AddMap("a", "b");
+            SymbolTable layerTable = new SymbolTable();
+            var layerId = layerTable.AddSymbol(new Layer("Keyboard"));
+            var mapId = layerTable.AddSymbol(new Map("a", "b"));
+            layerTable.AddLink(layerId, mapId);
 
             ComplexModification result = ComplexModificationGenerator.Generate(layerTable);
 

@@ -7,11 +7,11 @@ namespace LayerCake.Tests
 {
     public class LayerCakeLayerVisitorTests
     {
-        readonly LayerCakeLayerVisitor<Layer> uat;
+        readonly LayerCakeLayerVisitor uat;
 
         public LayerCakeLayerVisitorTests()
         {
-            uat = new LayerCakeLayerVisitor<Layer>();
+            uat = new LayerCakeLayerVisitor(new SymbolTable());
         }
 
         [Fact()]
@@ -23,9 +23,11 @@ namespace LayerCake.Tests
             ";
             LayerCakeParser.ConfigContext tree = ConfigFactory.CreateConfigContext(Input);
 
-            var layer = uat.Visit(tree);
+            var symbolTable = uat.Visit(tree);
 
-            layer.Name.Should().Be("navigation");
+            symbolTable.Layers.Should().ContainEquivalentOf(new Layer(name: "navigation"),
+                options => options.Excluding(m => m.Id)
+                                  .ComparingByMembers<Layer>());
         }
 
         [Fact()]
@@ -38,9 +40,12 @@ namespace LayerCake.Tests
             ";
             LayerCakeParser.ConfigContext tree = ConfigFactory.CreateConfigContext(Input);
 
-            var layer = uat.Visit(tree);
+            var symbolTable = uat.Visit(tree);
 
-            layer.Maps.Should().Contain(new Mapping("a", "b"));
+            symbolTable.Maps.Should().ContainEquivalentOf(
+                new Map("a", "b"), 
+                options => options.Excluding(m => m.Id)
+                                  .ComparingByMembers<Map>());
         }
 
         [Fact()]
@@ -54,12 +59,14 @@ namespace LayerCake.Tests
             ";
             LayerCakeParser.ConfigContext tree = ConfigFactory.CreateConfigContext(Input);
 
-            var layer = uat.Visit(tree);
+            var symbolTable = uat.Visit(tree);
 
-            layer.Maps.Should()
-                .ContainInOrder(
-                new Mapping("a", "b"),
-                new Mapping("b", "a"));
+            symbolTable.Maps.Should()
+                .BeEquivalentTo(new[] {
+                new Map(from: "a", to: "b"),
+                new Map(from: "b", to: "a") },
+                options => options.Excluding(m => m.Id)
+                                  .ComparingByMembers<Map>());
         }
 
         [Fact()]
@@ -72,9 +79,11 @@ namespace LayerCake.Tests
             ";
             LayerCakeParser.ConfigContext tree = ConfigFactory.CreateConfigContext(Input);
 
-            var layer = uat.Visit(tree);
+            var symbolTable = uat.Visit(tree);
 
-            layer.Toggles.Should().Contain(new Toggle("caps_lock", "layer2"));
+            symbolTable.Toggles.Should().ContainEquivalentOf(new Toggle(key: "caps_lock", layer: "layer2"),
+                options => options.Excluding(m => m.Id)
+                                  .ComparingByMembers<Toggle>());
         }
     }
 }

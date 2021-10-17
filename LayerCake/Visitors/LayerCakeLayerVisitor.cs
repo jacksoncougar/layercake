@@ -5,54 +5,61 @@ using System;
 
 namespace LayerCake
 {
-    public class LayerCakeLayerVisitor<T> : LayerCakeBaseVisitor<T> 
-        where T : ILayer
+    public class LayerCakeLayerVisitor : LayerCakeBaseVisitor<SymbolTable> 
     {
-        T layer;
+        readonly SymbolTable symbolTable;
+        Id currentLayer;
 
-        public override T VisitLayer_header([NotNull] LayerCakeParser.Layer_headerContext context)
+        public LayerCakeLayerVisitor(SymbolTable symbolTable)
+        {
+            this.symbolTable = symbolTable;
+        }
+
+        public override SymbolTable VisitLayer_header([NotNull] LayerCakeParser.Layer_headerContext context)
         {
             string name = context.GetChild(0).GetText();
 
-            layer = (T)Activator.CreateInstance(typeof(T),  name );
+            this.currentLayer = symbolTable.AddSymbol(new Layer(name: name));
 
             return base.VisitLayer_header(context);
         }
 
-        public override T VisitIs_statement([NotNull] LayerCakeParser.Is_statementContext context)
+        public override SymbolTable VisitIs_statement([NotNull] LayerCakeParser.Is_statementContext context)
         {
             var from = context.GetChild(0)
                 .GetText();
             var to = context.GetChild(2)
                 .GetText();
 
-            layer.AddMap(from, to);
+            Id id_ = symbolTable.AddSymbol(new Map(from: from, to: to));
+            symbolTable.AddLink(this.currentLayer, id_);
 
             return base.VisitIs_statement(context);
         }
 
-        public override T VisitToggle_statement([NotNull] LayerCakeParser.Toggle_statementContext context)
+        public override SymbolTable VisitToggle_statement([NotNull] LayerCakeParser.Toggle_statementContext context)
         {
             var layer = context.GetChild(1)
                    .GetText();
             var key = context.GetChild(3)
                 .GetText();
 
-            this.layer.AddToggle(key, layer);
+            Id id_ = symbolTable.AddSymbol(new Toggle(key: key, layer: layer));
+            symbolTable.AddLink(this.currentLayer, id_);
 
             return base.VisitToggle_statement(context);
         }
 
-        public override T Visit(IParseTree tree)
+        public override SymbolTable Visit(IParseTree tree)
         {
             base.Visit(tree);
-            return layer;
+            return symbolTable;
         }
 
-        public override T VisitWhen_block([NotNull] LayerCakeParser.When_blockContext context)
+        public override SymbolTable VisitWhen_block([NotNull] LayerCakeParser.When_blockContext context)
         {
-            ILayer layer = new LayerCakeWhereVisitor().Visit(context);
-            this.layer.AddNestedLayer(layer);
+            new LayerCakeWhereVisitor(symbolTable, currentLayer).Visit(context);
+
             return base.VisitWhen_block(context);
         }
     }
