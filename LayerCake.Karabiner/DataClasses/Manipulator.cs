@@ -20,7 +20,7 @@ namespace LayerCake.Karabiner
         public object[] To { get; set; }
 
         [JsonPropertyName("to_after_key_up")]
-        public ToAfterKeyUpEventObject ToAfterKeyUp { get; set; }
+        public ToEventObject[] ToAfterKeyUp { get; set; }
 
     }
 }

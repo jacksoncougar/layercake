@@ -36,8 +36,8 @@ namespace LayerCake
             var to = context.GetChild(3)
                 .GetText();
 
-            Id id1 = symbolTable.AddSymbol(new Map(from: from, to: to));
-            Id id2 = symbolTable.AddSymbol(new Map(from: to, to: from));
+            symbolTable.AddSymbol(new Map(from: from, to: to));
+            symbolTable.AddSymbol(new Map(from: to, to: from));
 
             return base.VisitSwap_statement(context);
         }
@@ -49,6 +49,7 @@ namespace LayerCake
             var key = context.GetChild(3)
                 .GetText();
 
+            symbolTable.AddSymbol<Toggle>(new Toggle(key, layer));
 
             return base.VisitToggle_statement(context);
         }

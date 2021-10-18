@@ -5,7 +5,7 @@ left_arrow is nothing
 down_arrow is nothing
 right_arrow is nothing
 
-when bundle is www.parsec.tv
+when bundle is tv.parsec.www
     swap left_command and left_alt 
 done
 
@@ -20,4 +20,19 @@ navigation layer
     a is left_control
     open_bracket is delete_forward
     quote is delete_or_backspace
+
+    toggle keypad with tab
+done
+
+keypad layer 
+    u is 7
+    i is 8
+    o is 9
+    j is 4
+    k is 5
+    l is 6
+    m is 1
+    comma is 2
+    period is 3
+    n is 0
 done

@@ -10,12 +10,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{44FBEF22-37C5-466A-9CDC-14245E6B3683}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		LANGUAGE-VERSION-1.md = LANGUAGE-VERSION-1.md
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerCake.Karabiner", "LayerCake.Karabiner\LayerCake.Karabiner.csproj", "{F1E151A7-7963-455A-8F83-75E66F9F4E9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LayerCake.Karabiner", "LayerCake.Karabiner\LayerCake.Karabiner.csproj", "{F1E151A7-7963-455A-8F83-75E66F9F4E9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerCake.Cli", "LayerCake.Cli\LayerCake.Cli.csproj", "{68CE5EEB-E8A5-4548-9261-5086F4CE14BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LayerCake.Cli", "LayerCake.Cli\LayerCake.Cli.csproj", "{68CE5EEB-E8A5-4548-9261-5086F4CE14BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerCake.CliTests", "LayerCake.CliTests\LayerCake.CliTests.csproj", "{E18E9308-6031-4BC3-8E37-509A6FBB8CC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +42,10 @@ Global
 		{68CE5EEB-E8A5-4548-9261-5086F4CE14BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68CE5EEB-E8A5-4548-9261-5086F4CE14BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68CE5EEB-E8A5-4548-9261-5086F4CE14BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E18E9308-6031-4BC3-8E37-509A6FBB8CC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E18E9308-6031-4BC3-8E37-509A6FBB8CC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E18E9308-6031-4BC3-8E37-509A6FBB8CC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E18E9308-6031-4BC3-8E37-509A6FBB8CC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

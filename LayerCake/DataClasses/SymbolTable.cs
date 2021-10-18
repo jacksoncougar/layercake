@@ -38,12 +38,6 @@ namespace LayerCake.DataClasses
             }
         }
 
-        public IEnumerable<Layer> LayersOf(Id id)
-        {
-            if (id.type != SymbolType.Layer) throw new ArgumentException("Bad layer Id", nameof(id));
-            return layers.Take(id.index + 1);
-        }
-
         public IEnumerable<Id> LinksOf(Id id, SymbolType type)
         {
             return links.LinksOf(id, type);

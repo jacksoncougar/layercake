@@ -5,19 +5,20 @@ namespace LayerCake.DataClasses
 {
     public class Synthesis
     {
-        public static IEnumerable<(string fromLayer, string key, string toLayer, string[] conditions, string when)> SynthesizeToggles(SymbolTable table)
+        public static IEnumerable<(string fromLayer, string key, string toLayer, (string, int)[] conditions, string when)> SynthesizeToggles(SymbolTable table)
         {
             foreach(var toggle in table.Toggles)
             {
-                Id layerId = table.LinksOf(toggle.Id, SymbolType.Layer).FirstOrDefault();
 
-                string[] conditions = null;
+                (string,int)[] conditions = null;
                 string layerName = "keyboard";
                 string whenCondition = null;
+                
+                Id layerId = table.LinksOf(toggle.Id, SymbolType.Layer).FirstOrDefault();
                 if (layerId)
                 {
                     Layer layer = table.GetSymbol<Layer>(layerId);
-                    conditions = table.LayersOf(layerId).Select(layer => layer.name).ToArray();
+                    conditions = new[] { (layer.name, 1) };
                     layerName = layer.name;
                 }
 
@@ -32,24 +33,24 @@ namespace LayerCake.DataClasses
             }
         }
 
-        public static IEnumerable<(string name, string from, string to, string[] conditions, string when)> SynthesizeMaps(SymbolTable table)
+        public static IEnumerable<(string name, string from, string to, (string, int)[] conditions, string when)> SynthesizeMaps(SymbolTable table)
         {
             foreach (var map in table.Maps)
             {
-                Id layerId = table.LinksOf(map.Id, SymbolType.Layer).FirstOrDefault();
 
-                string[] conditions = null;
+                (string,int)[] conditions = null;
                 string layerName = "keyboard";
                 string whenCondition = null;
+
+                Id layerId = table.LinksOf(map.Id, SymbolType.Layer).FirstOrDefault();
                 if (layerId)
                 {
                     Layer layer = table.GetSymbol<Layer>(layerId);
-                    conditions = table.LayersOf(layerId).Select(layer => layer.name).ToArray();
+                    conditions = new[] { (layer.name, 1) };
                     layerName = layer.name;
                 }
 
                 Id when = table.LinksOf(map.Id, SymbolType.Condition).FirstOrDefault();
-
                 if (when)
                 {
                     var condition = table.GetSymbol<When>(when);

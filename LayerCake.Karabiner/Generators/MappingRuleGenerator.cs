@@ -7,9 +7,9 @@ namespace LayerCake.Karabiner
 {
     public class MappingRuleGenerator
     {
-        public static Rule Generate(string layer, string from, string to, string[] conditions = null, string when = null)
+        public static Rule Generate(string layer, string from, string to, (string, int)[] conditions = null, string when = null)
         {
-            conditions ??= Array.Empty<string>();
+            conditions ??= Array.Empty<(string,int)>();
 
             return new Rule
             {
